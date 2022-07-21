@@ -10,6 +10,9 @@
   <div class="row">
     <div class="col-md-12">
       <h2>Items</h2>
+      <form class="mb-4 mt-4" action="{{ url_for('addNewItem') }}" method="post">
+        <input type="text" name="addItemFormTitle" placeholder="Add new item">
+      </form>
       <ul class="list-group mb-4">
         <table>
           <tr>
@@ -24,13 +27,18 @@
                   <td>
                       <div> {{item.status}}</div>
                   </td>
+                  <td>
+                    {% if item.status != 'Complete' %} 
+                      <a class="text-success"href="{{ url_for('markItemComplete', itemId=item.id) }}">Complete</a> 
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a class="text-danger" href="{{ url_for('deleteItem', itemId=item.id) }}">Remove</a>
+                  </td>
               </tr>
               {% endfor %}
       </table>
       </ul>
-      <form action="{{ url_for('addNewItem') }}" method="post">
-        <input type="text" name="addItemFormTitle" placeholder="Add new item">
-      </form>
     </div>
   </div>
 {% endblock %}
