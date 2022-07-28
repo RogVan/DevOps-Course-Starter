@@ -10,8 +10,39 @@
   <div class="row">
     <div class="col-md-12">
       <h2>Items</h2>
+      <form class="mb-4 mt-4" action="{{ url_for('addNewItem') }}" method="post">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" type="text" name="addItemFormTitle" placeholder="Add new item">
+          <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="submit">Submit</button>
+          </div>
+        </div>
+      </form>
       <ul class="list-group mb-4">
-        <!-- List the todo items here -->
+        <table>
+          <tr>
+              <th>Item</th>
+              <th>Status</th>
+          </tr>
+              {% for item in items %}
+              <tr>
+                  <td>
+                      <div> {{item.title}}</div>
+                  </td>
+                  <td>
+                      <div> {{item.status}}</div>
+                  </td>
+                  <td>
+                    {% if item.status != 'Complete' %} 
+                      <a class="text-success"href="{{ url_for('markItemComplete', itemId=item.id) }}">Complete</a> 
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a class="text-danger" href="{{ url_for('deleteItem', itemId=item.id) }}">Remove</a>
+                  </td>
+              </tr>
+              {% endfor %}
+      </table>
       </ul>
     </div>
   </div>
