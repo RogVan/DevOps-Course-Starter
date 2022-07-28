@@ -16,6 +16,10 @@ def index():
 @app.route('/add', methods=['POST'])
 def addNewItem():
     newItemTitle = request.form['addItemFormTitle']
+
+    if newItemTitle == '':
+        return redirect('/')
+    
     add_item(newItemTitle)
 
     return redirect('/')
