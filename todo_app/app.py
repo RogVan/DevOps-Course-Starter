@@ -1,16 +1,15 @@
 from flask import Flask, redirect, render_template, request
-from todo_app.data.session_items import add_item, delete_item, get_item, get_items, save_item
+from todo_app.data.trello_items import create_card, delete_card, get_all_cards, increment_complete_card
 
 from todo_app.flask_config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config())
 
-
 @app.route('/')
 def index():
-    itemsToDisplay = sorted(get_items(), key=lambda item: item['status'], reverse=True)
-
+    itemsToDisplay = get_all_cards()
+    
     return render_template('index.html', items=itemsToDisplay)
 
 @app.route('/add', methods=['POST'])
@@ -20,21 +19,18 @@ def addNewItem():
     if newItemTitle == '':
         return redirect('/')
     
-    add_item(newItemTitle)
+    create_card(newItemTitle)
 
     return redirect('/')
 
 @app.route('/mark-complete/<itemId>')
 def markItemComplete(itemId):
-    itemToUpdate = get_item(int(itemId))
-    itemToUpdate['status'] = 'Complete'
-    save_item(itemToUpdate)
+    increment_complete_card(itemId)
 
     return redirect('/')
 
 @app.route('/delete/<itemId>')
 def deleteItem(itemId):
-    delete_item(int(itemId))
+    delete_card(itemId)
 
     return redirect('/')
-    
