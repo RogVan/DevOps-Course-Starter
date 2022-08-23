@@ -35,7 +35,7 @@
                   <td>
                     {% if item.status == 'To Do' %} 
                       <a class="text-warning"href="{{ url_for('markItemComplete', itemId=item.id) }}">Start</a> 
-                    {% elif item.status != 'Complete' %} 
+                    {% elif item.status == 'In Progress' %} 
                       <a class="text-success"href="{{ url_for('markItemComplete', itemId=item.id) }}">Complete</a> 
                     {% endif %}
                   </td>

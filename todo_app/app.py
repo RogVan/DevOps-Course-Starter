@@ -16,12 +16,11 @@ def index():
 def addNewItem():
     newItemTitle = request.form['addItemFormTitle']
 
-    if newItemTitle == '':
+    if newItemTitle != '':
+        create_card(newItemTitle)
         return redirect('/')
-    
-    create_card(newItemTitle)
-
-    return redirect('/')
+        
+    return
 
 @app.route('/mark-complete/<itemId>')
 def markItemComplete(itemId):
