@@ -1,6 +1,3 @@
-from tokenize import String
-
-
 class Item:
     def __init__(self, id: str, name: str, status = 'To Do'):
         self.id = id
@@ -10,5 +7,3 @@ class Item:
     @classmethod
     def from_trello_card(self, card, list):
         return self(card['id'], card['name'], list['name'])
-     
-        
