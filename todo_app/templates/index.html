@@ -27,13 +27,15 @@
               {% for item in items %}
               <tr>
                   <td>
-                      <div> {{item.title}}</div>
+                      <div> {{item.name}}</div>
                   </td>
                   <td>
                       <div> {{item.status}}</div>
                   </td>
                   <td>
-                    {% if item.status != 'Complete' %} 
+                    {% if item.status == 'To Do' %} 
+                      <a class="text-warning"href="{{ url_for('markItemComplete', itemId=item.id) }}">Start</a> 
+                    {% elif item.status == 'In Progress' %} 
                       <a class="text-success"href="{{ url_for('markItemComplete', itemId=item.id) }}">Complete</a> 
                     {% endif %}
                   </td>
