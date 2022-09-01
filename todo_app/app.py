@@ -19,8 +19,8 @@ def addNewItem():
     if newItemTitle != '':
         create_card(newItemTitle)
         return redirect('/')
-        
-    return
+    
+    return redirect('/')
 
 @app.route('/mark-complete/<itemId>')
 def markItemComplete(itemId):

@@ -8,13 +8,13 @@ TO_DO_LIST_ID = os.getenv('TRELLO_TO_DO_LIST_ID')
 IN_PROGRESS_LIST_ID = os.getenv('TRELLO_IN_PROGRESS_LIST_ID')
 COMPLETED_LIST_ID = os.getenv('TRELLO_COMPLETED_LIST_ID')
 
-key = os.getenv('TRELLO_KEY')
-token = os.getenv('TRELLO_TOKEN')
+KEY = os.getenv('TRELLO_KEY')
+TOKEN = os.getenv('TRELLO_TOKEN')
 
 def delete_card(cardId):
     headers = {"Accept": "application/json"}
 
-    query = {'key': key, 'token': token}
+    query = {'key': KEY, 'token': TOKEN}
 
     delete(
         f'https://api.trello.com/1/cards/{cardId}',
@@ -28,8 +28,8 @@ def create_card(title):
     query = {
     'idList': TO_DO_LIST_ID,
     'name' : title,
-    'key': key,
-    'token': token
+    'key': KEY,
+    'token': TOKEN
     }
 
     post(
@@ -44,14 +44,14 @@ def increment_complete_card(cardId):
     print(card_to_move.status)
 
     if card_to_move.status == 'In Progress':
-        put(f'https://api.trello.com/1/cards/{cardId}/?idList={COMPLETED_LIST_ID}&key={key}&token={token}')
+        put(f'https://api.trello.com/1/cards/{cardId}/?idList={COMPLETED_LIST_ID}&key={KEY}&token={TOKEN}')
     elif card_to_move.status  == 'To Do':
-        put(f'https://api.trello.com/1/cards/{cardId}/?idList={IN_PROGRESS_LIST_ID}&key={key}&token={token}')
+        put(f'https://api.trello.com/1/cards/{cardId}/?idList={IN_PROGRESS_LIST_ID}&key={KEY}&token={TOKEN}')
 
 
 def get_all_cards():
     all_cards = []
-    board = get(f'https://api.trello.com/1/boards/{BOARD_ID}/lists?cards=open&key={key}&token={token}').json()
+    board = get(f'https://api.trello.com/1/boards/{BOARD_ID}/lists?cards=open&key={KEY}&token={TOKEN}').json()
 
     for list in board:
         list_cards = [Item.from_trello_card(card, list) for card in list['cards'] ]
