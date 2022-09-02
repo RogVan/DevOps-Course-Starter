@@ -2,15 +2,18 @@ from flask import Flask, redirect, render_template, request
 from todo_app.data.trello_items import create_card, delete_card, get_all_cards, increment_complete_card
 
 from todo_app.flask_config import Config
+from todo_app.models.ViewModel import ViewModel
 
 app = Flask(__name__)
 app.config.from_object(Config())
 
 @app.route('/')
 def index():
-    itemsToDisplay = get_all_cards()
+    items_to_display = get_all_cards()
+
+    view_model = ViewModel(items_to_display)
     
-    return render_template('index.html', items=itemsToDisplay)
+    return render_template('index.html', view_model=view_model)
 
 @app.route('/add', methods=['POST'])
 def addNewItem():
