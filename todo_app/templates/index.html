@@ -1,3 +1,4 @@
+{% import 'table.html' as table %}
 {% extends "layout.html" %}
 {% block title %}To-Do App{% endblock %}
 
@@ -18,34 +19,20 @@
           </div>
         </div>
       </form>
+
+      {{ table.tableComponent('To Do', view_model.to_do_items) }}
+
+      {{ table.tableComponent('In Progress', view_model.in_progress_items) }}
+
+      {{ table.tableComponent(view_model.completed_items.completed_text_label, view_model.completed_items.display_by_default) }}
+      {% if view_model.completed_items.expand_to_display|length > 0 %}
       <ul class="list-group mb-4">
-        <table>
-          <tr>
-              <th>Item</th>
-              <th>Status</th>
-          </tr>
-              {% for item in items %}
-              <tr>
-                  <td>
-                      <div> {{item.name}}</div>
-                  </td>
-                  <td>
-                      <div> {{item.status}}</div>
-                  </td>
-                  <td>
-                    {% if item.status == 'To Do' %} 
-                      <a class="text-warning"href="{{ url_for('markItemComplete', itemId=item.id) }}">Start</a> 
-                    {% elif item.status == 'In Progress' %} 
-                      <a class="text-success"href="{{ url_for('markItemComplete', itemId=item.id) }}">Complete</a> 
-                    {% endif %}
-                  </td>
-                  <td>
-                    <a class="text-danger" href="{{ url_for('deleteItem', itemId=item.id) }}">Remove</a>
-                  </td>
-              </tr>
-              {% endfor %}
-      </table>
+        <details>
+          <summary>View More</summary>
+          {{ table.tableComponent('', view_model.completed_items.expand_to_display) }}
+        </details>
       </ul>
+      {% endif %}
     </div>
   </div>
 {% endblock %}
