@@ -1,4 +1,3 @@
-from importlib.metadata import requires
 from flask import Flask, redirect, render_template, request
 from todo_app.data.trello_items import create_card, delete_card, get_all_cards, increment_complete_card
 
