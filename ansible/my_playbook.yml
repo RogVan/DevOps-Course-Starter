@@ -1,0 +1,67 @@
+---
+- name: My First Playbook
+  hosts: hosts
+  remote_user: ec2-user
+
+  vars_prompt:
+    - name: trello_key
+      prompt: Enter a trello api key
+
+    - name: trello_token
+      prompt: Enter a trello token
+
+  tasks:
+  - name: Install packages
+    become: yes
+    yum:
+      name: "{{ item }}"
+      update_cache: true
+    loop:
+      - git
+      - python3
+  
+  - name: Install poetry if not already exists
+    shell: curl -sSL https://install.python-poetry.org | python3 -
+    args:
+      creates: ~/.local/bin/poetry
+
+  - name: Creates directory for App
+    become: yes
+    file:
+      path: /opt/todoapp
+      state: directory
+      owner: ec2-user
+
+  - name: Clone github repo
+    ansible.builtin.git:
+      repo: https://github.com/RogVan/DevOps-Course-Starter.git
+      dest: /opt/todoapp
+      version: main
+
+  - name: Install poetry dependencies
+    shell: cd /opt/todoapp && ~/.local/bin/poetry install
+
+  - name: Set environment template
+    ansible.builtin.template:
+      src: ~/templates/.env.j2
+      dest: /opt/todoapp/.env
+      owner: ec2-user
+
+  - name: Set .env variables
+    command: env
+    environment: 
+      trello_key: '{{ trello_key }}'
+      trello_token: '{{ trello_token }}'
+
+  - name: Copy run file
+    become: yes
+    ansible.builtin.copy:
+      src: todoapp.service
+      dest: /etc/systemd/system/todoapp.service
+
+  - name: Start server
+    become: yes
+    systemd:
+      name: todoapp.service
+      daemon_reload: true
+      state: restarted
