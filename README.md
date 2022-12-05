@@ -54,6 +54,13 @@ You will be prompted to supply your trello api key and token
 
 Navigate to port 5000 on your host to view the website
 
+## Running the app with Docker
+
+Make sure you have Docker Desktop installed
+
+Populate the environment variables in a `.env` file like usual
+
+Run `docker compose up` from in root directory
 
 ## Running the App Locally
 
