@@ -42,7 +42,20 @@ You will first need to [create an account](https://trello.com/signup) and then g
 
 You will also need to create a new Trello board with lists titled 'To Do', 'In Progress' and 'Complete'. save the list IDs and board ID as environment variables.
 
-## Running the App
+## Running the App on remote host using ansible
+
+Connect to your remote control node (using SSH for example)
+
+Copy the ansible and templates directories into the root of the control node
+
+Run `ansible-playbook my_playbook.yml -i inventory`
+
+You will be prompted to supply your trello api key and token
+
+Navigate to port 5000 on your host to view the website
+
+
+## Running the App Locally
 
 Once the all dependencies have been installed, start the Flask app in development mode within the Poetry environment by running:
 ```bash
