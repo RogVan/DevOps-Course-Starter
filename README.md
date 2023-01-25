@@ -60,7 +60,7 @@ Make sure you have Docker Desktop installed
 
 Populate the environment variables in a `.env` file like usual
 
-Run `docker build --target development --tag todo-app:dev` to build the image
+Run `docker build --target development --tag todo-app:dev .` to build the image
 
 Run `docker run -d -p 8000:5000 --mount type=bind,source="$(pwd)"/todo_app,target=/app/todo_app --env-file=.env todo-app:dev` to run the container in dev mode with hot reloading
 
