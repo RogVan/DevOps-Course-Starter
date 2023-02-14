@@ -1,8 +1,15 @@
 name: Continuous Integration
-on: [push]
+on: 
+    push:
+        paths-ignore:
+            'README.md'
+    pull_request:
+        paths-ignore:
+            'README.md'
+
 jobs: 
     build:
-        name: Build Docker test image
+        name: Build & Run tests, triggered by @${{ github.actor }}
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v2
