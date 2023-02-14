@@ -70,7 +70,7 @@ Navigate to `localhost:8000` to open the website
 
 Build the image in test mode with `docker build --target test --tag todo-app:test .`
 
-Run the container in test mode with test environment using `docker run  --env-file=.env.template todo-app:test`.
+Run the container in test mode with test environment using `docker run  --env-file=.env.template todo-app:test`
 
 You may specify a test suite to run by adding `todo_app/tests/{test-directory-name}` to the end of the run command.
 
