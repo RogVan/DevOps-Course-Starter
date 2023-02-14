@@ -66,6 +66,14 @@ Run `docker run -d -p 8000:5000 --mount type=bind,source="$(pwd)"/todo_app,targe
 
 Navigate to `localhost:8000` to open the website
 
+## Running the app tests with Docker
+
+Build the image in test mode with `docker build --target test --tag todo-app:test .`
+
+Run the container in test mode with test environment using `docker run  --env-file=.env.template todo-app:test`.
+
+You may specify a test suite to run by adding `todo_app/tests/{test-directory-name}` to the end of the run command.
+
 ## Running the app in production mode with Docker Compose
 
 Make sure you have Docker Desktop installed

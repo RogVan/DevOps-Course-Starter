@@ -6,7 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 
 @pytest.fixture
 def client():
-    file_path = find_dotenv('.env.test')
+    file_path = find_dotenv('.env.template')
     load_dotenv(file_path, override=True)
 
     test_app = app.create_app()
@@ -24,7 +24,7 @@ class StubResponse():
 def stub(url, params={}):
     test_board_id = os.environ.get('TRELLO_BOARD_ID')
     fake_response_data = None
-    if url == f'https://api.trello.com/1/boards/{test_board_id}/lists?cards=open&key=key&token=token':
+    if url == f'https://api.trello.com/1/boards/board-id/lists?cards=open&key=secret-key&token=secret-token':
         fake_response_data = [{
             'id': '123abc',
             'name': 'To Do',
