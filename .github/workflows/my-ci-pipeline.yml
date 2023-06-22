@@ -42,6 +42,7 @@ jobs:
           context: .
           push: true
           tags: rogvan/todoapp:prod
+          target: production
 
     redeploy_azure:
       name: Triggers Azure to redploy with the latest Docker Image
