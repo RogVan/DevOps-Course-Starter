@@ -9,7 +9,7 @@ on:
 
 jobs: 
     build:
-        name: Build, triggered by @${{ github.actor }}
+        name: Build & Run tests, triggered by @${{ github.actor }}
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v2
@@ -17,7 +17,7 @@ jobs:
         - run: docker run --env-file=.env.template todo_app:test todo_app/tests/unit
         - run: docker run --env-file=.env.template todo_app:test todo_app/tests/integration
     push_to_registry:
-      needs: test
+      needs: build
       if: github.ref == 'refs/heads/master'
       name: Push Docker image to Docker Hub
       runs-on: ubuntu-latest
