@@ -2,10 +2,10 @@ name: Continuous Integration
 on: 
     push:
         paths-ignore:
-            'README.md'
+            - 'README.md'
     pull_request:
         paths-ignore:
-            'README.md'
+            - 'README.md'
 
 jobs: 
     build:
@@ -16,3 +16,40 @@ jobs:
         - run: docker build --target test --tag todo_app:test .
         - run: docker run --env-file=.env.template todo_app:test todo_app/tests/unit
         - run: docker run --env-file=.env.template todo_app:test todo_app/tests/integration
+    push_to_registry:
+      needs: build
+      name: Push Docker image to Docker Hub
+      runs-on: ubuntu-latest
+      steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: rogvan/todoapp:prod
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          tags: rogvan/todoapp:prod
+          target: production
+
+    redeploy_azure:
+      name: Triggers Azure to redploy with the latest Docker Image
+      needs: push_to_registry
+      runs-on: ubuntu-latest
+      steps:
+      - name: make request to redeployment url
+        run: curl -dh -X POST --fail "${{ secrets.AZURE_REDEPLOYMENT_WEBHOOK }}"
+
+  
