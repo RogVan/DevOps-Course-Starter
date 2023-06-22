@@ -18,7 +18,6 @@ jobs:
         - run: docker run --env-file=.env.template todo_app:test todo_app/tests/integration
     push_to_registry:
       needs: build
-      if: github.ref == 'refs/heads/master'
       name: Push Docker image to Docker Hub
       runs-on: ubuntu-latest
       steps:
